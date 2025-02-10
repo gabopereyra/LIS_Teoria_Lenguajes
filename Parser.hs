@@ -20,7 +20,10 @@ lis = makeTokenParser (emptyDef   { commentStart  = "/*"
                                   , commentLine   = "//"
                                   , reservedNames = ["true","false","skip","if",
                                                      "then","else","end",
-                                                     "while","do", "repeat"]
+                                                     "while","do", "repeat", 
+                                                     "input", "print", "tic",
+                                                     "sin", "cos", "tan", 
+                                                     "ceil", "floor", "pi"]
                                   , reservedOpNames = [  "+"
                                                        , "-"
                                                        , "*"
@@ -36,32 +39,41 @@ lis = makeTokenParser (emptyDef   { commentStart  = "/*"
                                                        ]
                                    }
                                  )
-----------------------------------
---- Parser de expressiones enteras
------------------------------------
-{--
-chainl p op x
-parsea 0 o más ocurrencias de p separadas por op
-Retorna el valor que se obtiene al aplicar todas las
-funciones retornadas por op a los valores retornados
-por p
 
-t := t + t | m
-term = chainl factor (do {symbol "+"; return (+)})
-factor = integer <|> parens term
---}
-intexp :: Parser IntExp
-intexp  = chainl1 term addopp
+----------------------------------
+--- Parser de expresiones
+-----------------------------------
+expParser :: Parser Exp
+expParser = chainl1 term addopp
 
 term = chainl1 factor multopp
 
-factor = try (parens lis intexp)
+factor = try (parens lis expParser)
          <|> try (do reservedOp lis "-"
                      f <- factor
                      return (UMinus f))
-         <|> (do n <- integer lis
-                 return (Const n)
-              <|> do str <- identifier lis
+         <|> try (do reserved lis "pi"
+                     return Pi)
+         <|> try (do reserved lis "sin"
+                     e <- factor
+                     return (Sin e))
+         <|> try (do reserved lis "cos"
+                     e <- factor
+                     return (Cos e))
+         <|> try (do reserved lis "tan"
+                     e <- factor
+                     return (Tan e))
+         <|> try (do reserved lis "ceil"
+                     e <- factor
+                     return (Ceil e))
+         <|> try (do reserved lis "floor"
+                     e <- factor
+                     return (Floor e))
+         <|> try (do n <- float lis
+                     return (FloatConst n))
+         <|> try (do n <- integer lis
+                     return (Const n))
+         <|> try (do str <- identifier lis
                      return (Var str))
 
 multopp = do try (reservedOp lis "*")
@@ -75,7 +87,7 @@ addopp = do try (reservedOp lis "+")
                 return Minus
 
 -----------------------------------
---- Parser de expressiones booleanas
+--- Parser de expresiones booleanas
 ------------------------------------
 boolexp :: Parser BoolExp
 boolexp  = chainl1 boolexp2 (try (do reservedOp lis "|"
@@ -88,12 +100,12 @@ boolexp3 = try (parens lis boolexp)
            <|> try (do reservedOp lis "~"
                        b <- boolexp3
                        return (Not b))
-           <|> intcomp
+           <|> expcomp
            <|> boolvalue
 
-intcomp = try (do i <- intexp
+expcomp = try (do i <- expParser
                   c <- compopp
-                  j <- intexp
+                  j <- expParser
                   return (c i j))
 
 compopp = try (do reservedOp lis "="
@@ -131,11 +143,20 @@ comm2 = try (do reserved lis "skip"
                     cond <- boolexp
                     reserved lis "end"
                     return (Repeat c cond))
+        <|> try (do reserved lis "input"
+                    str <- identifier lis
+                    return (Input str))
+        <|> try (do reserved lis "print"
+                    txt <- optionMaybe (stringLiteral lis)
+                    e <- expParser
+                    return (Print txt e))
+        <|> try (do reserved lis "tic"
+                    op <- identifier lis
+                    return (Tic op))
         <|> try (do str <- identifier lis
                     reservedOp lis ":="
-                    e <- intexp
+                    e <- expParser
                     return (Let str e))
-
 
 ------------------------------------
 -- Funcion de parseo
