@@ -151,7 +151,7 @@ comm2 = try (do reserved lis "skip"
                     e <- expParser
                     return (Print txt e))
         <|> try (do reserved lis "tic"
-                    op <- identifier lis
+                    op <- stringLiteral lis
                     return (Tic op))
         <|> try (do str <- identifier lis
                     reservedOp lis ":="
