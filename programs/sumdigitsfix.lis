@@ -1,0 +1,12 @@
+/* Suma de digitos de N */
+
+N := 9000;
+ans := 0;
+
+repeat
+	ans := ans + 1;
+	N := floor N / 10
+until N = 0
+end;
+
+ans := ans - 1

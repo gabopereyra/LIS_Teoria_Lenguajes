@@ -1,0 +1,11 @@
+input a;
+input b;
+
+// validamos que C esta disponible
+c := a+4;
+
+// mostrar 'a' sin texto que lo acompañe
+print a;
+
+// aqui imprime 'b' con texto adicional
+print "El valor de b es:" b

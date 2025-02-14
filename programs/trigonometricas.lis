@@ -1,0 +1,8 @@
+a:=30;
+b:=60;
+c:=180;
+
+sa:= sin a;
+cb:= cos b;
+tc:= tan c;
+spi:= sin pi

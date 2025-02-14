@@ -1,0 +1,6 @@
+tic "*";
+
+x := 2;
+y := 3;
+
+multiplicacion := x * y

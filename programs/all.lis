@@ -1,0 +1,77 @@
+// Uso de la operación Tic
+tic ":=";
+tic "if";
+tic "repeat";
+tic "-";
+tic "+";
+tic "*";
+tic "/";
+tic "sin";
+tic "cos";
+tic "tan";
+tic "ceil";
+tic "floor";
+tic "pi";
+tic "=";
+tic "<";
+tic ">";
+tic "&";
+tic "|";
+tic "~";
+tic ":=";
+
+// Definición de variables
+x := 10;
+y := 20;
+z := 30;
+
+// Operaciones aritméticas
+suma := x + y;
+resta := y - x;
+multiplicacion := x * z;
+division := z / y;
+negativo := -x;
+
+// Funciones trigonométricas y constantes
+pi_val := pi;
+sin_x := sin x;
+cos_y := cos y;
+tan_z := tan z;
+ceil_pi := ceil pi;
+floor_pi := floor pi;
+
+// Uso correcto de expresiones booleanas
+if x > y then 
+    max := x 
+else 
+    max := y 
+end;
+
+// Bucle repeat-until con condición booleana
+contador := 0;
+repeat 
+    contador := contador + 1
+until contador = 5 
+end;
+
+
+// io
+input entrada_usuario;
+print "El usuario ingreso:" entrada_usuario;
+
+// Entrada y salida
+
+// Combinaciones de expresiones booleanas en estructuras de control
+if (x > 5) & (entrada_usuario < 16) then
+    verdadera := 1
+else
+    if (x < 5) | (entrada_usuario = 16) then
+        verdadera := 2
+    else
+        if  ~(entrada_usuario = 30) then
+            verdadera := 3
+        else
+            verdadera := 4
+        end
+    end
+end

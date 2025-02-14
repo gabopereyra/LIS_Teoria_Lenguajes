@@ -1,0 +1,16 @@
+tic "cos";
+tic ":=";
+
+x := 30;
+y := 45;
+z := 60;
+
+tic "tan";
+tic "sin";
+
+sa:= sin 30;
+sb:= sin 45;
+sc:= sin 60;
+
+tic "sin"
+
