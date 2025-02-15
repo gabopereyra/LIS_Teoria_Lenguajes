@@ -70,7 +70,7 @@ factor = try (parens lis expParser)
                      e <- factor
                      return (Floor e))
          <|> try (do n <- float lis
-                     return (FloatConst n))
+                     return (DoubleConst n))
          <|> try (do n <- integer lis
                      return (Const n))
          <|> try (do str <- identifier lis

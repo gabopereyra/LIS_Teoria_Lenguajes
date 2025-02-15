@@ -119,7 +119,7 @@ evalComm (Tic op) = initCount op
 -- Evalua una expresion
 evalExp :: (MonadState m, MonadError m, MonadTick m, MonadTicOp m) => Exp -> m Double
 evalExp (Const n) = return (fromInteger n)
-evalExp (FloatConst f) = return f
+evalExp (DoubleConst f) = return f
 evalExp (Var v) = do val <- lookfor v
                      return val
 evalExp (UMinus e) = do val <- evalExp e

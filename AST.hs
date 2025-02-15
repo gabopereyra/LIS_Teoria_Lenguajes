@@ -5,7 +5,7 @@ type Variable = String
 
 -- Expresiones Aritméticas (Enteras y Flotantes)
 data Exp = Const Integer
-         | FloatConst Double
+         | DoubleConst Double
          | Var Variable
          | UMinus Exp
          | Plus Exp Exp
