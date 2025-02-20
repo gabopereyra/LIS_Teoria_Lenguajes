@@ -3,6 +3,9 @@ b:=60;
 c:=180;
 
 sa:= sin a;
+saround:= round 4 sa;
 cb:= cos b;
+cbround:= round 4 cb;
 tc:= tan c;
-spi:= sin pi
+tcround:= round 4 tc;
+spi := sin pi

@@ -5,6 +5,10 @@ import Text.Parsec.Token
 import Text.Parsec.Language (emptyDef)
 import AST
 
+listOfReservedNames = ["true","false","skip","if", "then","else","end", "while","do", "repeat", "input", "print", "tic", "sin", "cos", "tan", "ceil", "floor", "pi", "round"]
+
+listOfReservedOPNames = ["+", "-", "*", "/", "<", ">", "&", "|", "=", ";", "~", ":="]
+
 -- Funcion para facilitar el testing del parser.
 totParser :: Parser a -> Parser a
 totParser p = do
@@ -18,25 +22,8 @@ lis :: TokenParser u
 lis = makeTokenParser (emptyDef   { commentStart  = "/*"
                                   , commentEnd    = "*/"
                                   , commentLine   = "//"
-                                  , reservedNames = ["true","false","skip","if",
-                                                     "then","else","end",
-                                                     "while","do", "repeat", 
-                                                     "input", "print", "tic",
-                                                     "sin", "cos", "tan", 
-                                                     "ceil", "floor", "pi"]
-                                  , reservedOpNames = [  "+"
-                                                       , "-"
-                                                       , "*"
-                                                       , "/"
-                                                       , "<"
-                                                       , ">"
-                                                       , "&"
-                                                       , "|"
-                                                       , "="
-                                                       , ";"
-                                                       , "~"
-                                                       , ":="
-                                                       ]
+                                  , reservedNames = listOfReservedNames
+                                  , reservedOpNames = listOfReservedOPNames
                                    }
                                  )
 
@@ -69,6 +56,10 @@ factor = try (parens lis expParser)
          <|> try (do reserved lis "floor"
                      e <- factor
                      return (Floor e))
+        <|> try (do reserved lis "round"
+                    e <- factor
+                    f <- factor
+                    return (Round e f))
          <|> try (do n <- float lis
                      return (DoubleConst n))
          <|> try (do n <- integer lis
@@ -148,15 +139,60 @@ comm2 = try (do reserved lis "skip"
                     return (Input str))
         <|> try (do reserved lis "print"
                     txt <- optionMaybe (stringLiteral lis)
-                    e <- expParser
+                    e <- printParse
                     return (Print txt e))
         <|> try (do reserved lis "tic"
-                    op <- stringLiteral lis
+                    op <- opParse
                     return (Tic op))
         <|> try (do str <- identifier lis
                     reservedOp lis ":="
                     e <- expParser
                     return (Let str e))
+
+printParse = try opParse <|> try expParser
+
+opParse = try (do reservedOp lis ":="
+                  return (Var ":="))
+          <|> try (do reserved lis "if"
+                      return (Var "if"))
+          <|> try (do reserved lis "repeat"
+                      return (Var "repeat"))
+          <|> try (do reserved lis "input"
+                      return (Var "input"))
+          <|> try (do reserved lis "print"
+                      return (Var "print"))
+          <|> try (do reservedOp lis "-"
+                      return (Var "-"))
+          <|> try (do reservedOp lis "+"
+                      return (Var "+"))
+          <|> try (do reservedOp lis "*"
+                      return (Var "*"))
+          <|> try (do reservedOp lis "/"
+                      return (Var "/"))
+          <|> try (do reserved lis "sin"
+                      return (Var "sin"))
+          <|> try (do reserved lis "cos"
+                      return (Var "cos"))
+          <|> try (do reserved lis "tan"
+                      return (Var "tan"))
+          <|> try (do reserved lis "ceil"
+                      return (Var "ceil"))
+          <|> try (do reserved lis "floor"
+                      return (Var "floor"))
+          <|> try (do reserved lis "pi"
+                      return (Var "pi"))
+          <|> try (do reservedOp lis "="
+                      return (Var "="))
+          <|> try (do reservedOp lis "<"
+                      return (Var "<"))
+          <|> try (do reservedOp lis ">"
+                      return (Var ">"))
+          <|> try (do reservedOp lis "&"
+                      return (Var "&"))
+          <|> try (do reservedOp lis "|"
+                      return (Var "|"))
+          <|> try (do reservedOp lis "~"
+                      return (Var "~"))
 
 ------------------------------------
 -- Funcion de parseo

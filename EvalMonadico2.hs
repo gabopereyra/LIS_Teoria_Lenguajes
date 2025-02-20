@@ -68,9 +68,9 @@ instance MonadIO StateErrorTick where
         return (Just (result, s, 0)))
 
 class Monad m => MonadTicOp m where
-    ticOp :: String -> m ()
-    initCount :: String -> m ()
-    existKey :: String -> m Bool
+    ticOp :: Variable -> m ()
+    initCount :: Variable -> m ()
+    existKey :: Variable -> m Bool
 
 instance MonadTicOp StateErrorTick where
     ticOp op = do exists <- existKey op
@@ -104,7 +104,8 @@ evalComm (Cond b tc fc) = do bval <- evalBoolExp b
                              else evalComm fc
 evalComm (Repeat c b) = do ticOp "repeat"
                            evalComm (Seq c (Cond b Skip (Repeat c b)))
-evalComm (Input v) = do input <- liftIO getLine
+evalComm (Input v) = do liftIO (putStrLn "Waiting for a value...")
+                        input <- liftIO getLine
                         ticOp "input"
                         case readMaybe input :: Maybe Double of
                             Just number -> update v number
@@ -114,7 +115,7 @@ evalComm (Print t e) = do val <- evalExp e
                           liftIO (putStrLn (case t of
                                   Just txt -> txt ++ " " ++ show val
                                   Nothing  -> show val))
-evalComm (Tic op) = initCount op 
+evalComm (Tic (Var variable)) = do initCount variable
                           
 -- Evalua una expresion
 evalExp :: (MonadState m, MonadError m, MonadTick m, MonadTicOp m) => Exp -> m Double
@@ -161,6 +162,13 @@ evalExp (Ceil e) = do val <- evalExp e
 evalExp (Floor e) = do val <- evalExp e
                        ticOp "floor"
                        return (fromIntegral (floor val))
+evalExp (Round e f) = do 
+    expo <- evalExp e
+    val <- evalExp f
+    let expo' = max 0 (floor expo)
+        factor = 10 ^ expo'
+    return (fromIntegral (round (val * factor)) / factor)
+             
 evalExp Pi = do ticOp "pi"
                 return pi
 

@@ -19,5 +19,5 @@ run ifile = do
       Right t    -> do 
                       result <- eval t
                       print result
-                    --print t  -- si descomento esta y comento las 2 de arriba habilito mostar el AST
+                    --print t  -- si descomento esta y comento las 2 de arriba habilito mostrar el AST
           

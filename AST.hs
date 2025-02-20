@@ -18,6 +18,7 @@ data Exp = Const Integer
          | Tan Exp
          | Ceil Exp
          | Floor Exp
+         | Round Exp Exp
          | Pi
     deriving (Show, Eq)
 
@@ -40,5 +41,5 @@ data Comm = Skip
           | Repeat Comm BoolExp
           | Input Variable
           | Print (Maybe String) Exp
-          | Tic String
+          | Tic Exp
     deriving (Show, Eq)

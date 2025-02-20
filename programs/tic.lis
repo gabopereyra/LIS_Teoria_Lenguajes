@@ -1,16 +1,13 @@
-tic "cos";
-tic ":=";
+tic :=;
+tic sin;
 
 x := 30;
-y := 45;
-z := 60;
+y := sin x;
 
-tic "tan";
-tic "sin";
+print "el valor de x es:" (x+y);
 
-sa:= sin 30;
-sb:= sin 45;
-sc:= sin 60;
+print "La operacion 'seno' se ha utilizado:" sin;
 
-tic "sin"
+print "Redondeando pi a 5 decimales" round 5 pi;
 
+print sin

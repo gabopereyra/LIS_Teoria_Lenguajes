@@ -1,24 +1,24 @@
 // Uso de la operación Tic
-tic ":=";
-tic "if";
-tic "repeat";
-tic "-";
-tic "+";
-tic "*";
-tic "/";
-tic "sin";
-tic "cos";
-tic "tan";
-tic "ceil";
-tic "floor";
-tic "pi";
-tic "=";
-tic "<";
-tic ">";
-tic "&";
-tic "|";
-tic "~";
-tic ":=";
+tic :=;
+tic if;
+tic repeat;
+tic -;
+tic +;
+tic *;
+tic /;
+tic sin;
+tic cos;
+tic tan;
+tic ceil;
+tic floor;
+tic pi;
+tic =;
+tic <;
+tic >;
+tic &;
+tic |;
+tic ~;
+tic :=;
 
 // Definición de variables
 x := 10;
@@ -54,6 +54,14 @@ repeat
 until contador = 5 
 end;
 
+// haciendo uso del round
+pi4:= round 4 pi;
+pi3:= round 3 pi;
+pi2:= round 2 pi;
+
+print "pi redondeado a 4 decimales" pi4;
+print "pi redondeado a 3 decimales" pi3;
+print "pi redondeado a 2 decimales" pi2;
 
 // io
 input entrada_usuario;
@@ -74,4 +82,44 @@ else
             verdadera := 4
         end
     end
-end
+end;
+
+print "el valor de := es:" :=;
+print "el valor de if es:" if;
+print "el valor de repeat es:" repeat;
+print "el valor de - es:" -;
+print "el valor de + es:" +;
+print "el valor de * es:" *;
+print "el valor de / es:" /;
+print "el valor de sin es:" sin;
+print "el valor de cos es:" cos;
+print "el valor de tan es:" tan;
+print "el valor de ceil es:" ceil;
+print "el valor de floor es:" floor;
+print "el valor de pi es:" pi;
+print "el valor de = es:" =;
+print "el valor de < es:" <;
+print "el valor de > es:" >;
+print "el valor de & es:" &;
+print "el valor de | es:" |;
+print "el valor de ~ es:" ~;
+
+print :=;
+print if;
+print repeat;
+print -;
+print +;
+print *;
+print /;
+print sin;
+print cos;
+print tan;
+print ceil;
+print floor;
+print pi;
+print =;
+print <;
+print >;
+print &;
+print |;
+print ~
